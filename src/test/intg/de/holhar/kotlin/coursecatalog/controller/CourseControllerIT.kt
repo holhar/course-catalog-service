@@ -65,4 +65,26 @@ class CourseControllerIT {
         println("courseDts '$courseDtos'")
         assertEquals(3, courseDtos!!.size)
     }
+
+    @Test
+    fun updateCourse() {
+
+        // existing course
+        val course = Course(null, "Build RestFul APis using SpringBoot and Kotlin", "Development")
+        courseRepository.save(course)
+
+        // updated CourseDto
+        val updatedCourseDto = CourseDto(null, "Build RestFul APis using SpringBoot and Kotlin1", "Development")
+
+        val updatedCourse = webTestClient.put()
+            .uri("/v1/courses/{courseId}", course.id)
+            .bodyValue(updatedCourseDto)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDto::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("Build RestFul APis using SpringBoot and Kotlin1", updatedCourse!!.name)
+    }
 }
