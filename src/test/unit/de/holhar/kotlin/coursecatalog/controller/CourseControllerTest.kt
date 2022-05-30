@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.test.web.reactive.server.WebTestClient
+import java.lang.RuntimeException
 
 @WebMvcTest(controllers = [CourseController::class])
 @AutoConfigureWebTestClient
@@ -48,6 +49,26 @@ class CourseControllerTest {
 
     @Test
     fun addCourse_validation() {
+
+        val courseDto = CourseDto(null, "Build Restful APIs using Kotlin and SpringBoot", "Development")
+
+        val errorMessage = "Unexpected error occurred"
+        every { courseServiceMock.addCourse(any()) } throws RuntimeException(errorMessage)
+
+        val response = webTestClient.post()
+            .uri("/v1/courses")
+            .bodyValue(courseDto)
+            .exchange()
+            .expectStatus().is5xxServerError
+            .expectBody(String::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals(errorMessage, response)
+    }
+
+    @Test
+    fun addCourse_runtimeException() {
 
         val courseDto = CourseDto(null, "", "")
 
