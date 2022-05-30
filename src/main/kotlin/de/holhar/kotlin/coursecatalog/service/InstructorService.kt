@@ -4,6 +4,7 @@ import de.holhar.kotlin.coursecatalog.dto.InstructorDto
 import de.holhar.kotlin.coursecatalog.entity.Instructor
 import de.holhar.kotlin.coursecatalog.repository.InstructorRepository
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class InstructorService(val instructorRepository: InstructorRepository) {
@@ -17,5 +18,9 @@ class InstructorService(val instructorRepository: InstructorRepository) {
         return savedInstructor.let {
             InstructorDto(it.id, it.name)
         }
+    }
+
+    fun findByInstructorId(instructorId: Int): Optional<Instructor> {
+        return instructorRepository.findById(instructorId)
     }
 }
