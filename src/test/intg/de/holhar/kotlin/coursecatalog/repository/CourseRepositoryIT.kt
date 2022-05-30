@@ -1,5 +1,6 @@
 package de.holhar.kotlin.coursecatalog.repository
 
+import de.holhar.kotlin.coursecatalog.util.PostgreSQLContainerInitializer
 import de.holhar.kotlin.coursecatalog.util.courseEntityList
 import de.holhar.kotlin.coursecatalog.util.instructorEntity
 import org.junit.jupiter.api.Assertions
@@ -9,13 +10,15 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
 import java.util.stream.Stream
 
 @DataJpaTest
 @ActiveProfiles("test")
-class CourseRepositoryIT {
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+class CourseRepositoryIT : PostgreSQLContainerInitializer() {
 
     @Autowired
     lateinit var courseRepository: CourseRepository
