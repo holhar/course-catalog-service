@@ -8,6 +8,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
@@ -52,11 +53,16 @@ class CourseControllerTest {
 
         every { courseServiceMock.addCourse(any()) } returns courseDto(id = 1)
 
-        webTestClient.post()
+        val response = webTestClient.post()
             .uri("/v1/courses")
             .bodyValue(courseDto)
             .exchange()
             .expectStatus().isBadRequest
+            .expectBody(String::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("courseDto.category must not be blank, courseDto.name must not be blank", response)
     }
 
     @Test
