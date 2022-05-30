@@ -87,4 +87,17 @@ class CourseControllerIT {
 
         assertEquals("Build RestFul APis using SpringBoot and Kotlin1", updatedCourse!!.name)
     }
+
+    @Test
+    fun deleteCourse() {
+
+        // existing course
+        val course = Course(null, "Build RestFul APis using SpringBoot and Kotlin", "Development")
+        courseRepository.save(course)
+
+        val updatedCourse = webTestClient.delete()
+            .uri("/v1/courses/{courseId}", course.id)
+            .exchange()
+            .expectStatus().isNoContent
+    }
 }
