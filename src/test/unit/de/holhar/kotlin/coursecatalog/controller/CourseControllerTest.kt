@@ -46,6 +46,20 @@ class CourseControllerTest {
     }
 
     @Test
+    fun addCourse_validation() {
+
+        val courseDto = CourseDto(null, "", "")
+
+        every { courseServiceMock.addCourse(any()) } returns courseDto(id = 1)
+
+        webTestClient.post()
+            .uri("/v1/courses")
+            .bodyValue(courseDto)
+            .exchange()
+            .expectStatus().isBadRequest
+    }
+
+    @Test
     fun retrieveAllCourses() {
 
         every { courseServiceMock.retrieveAllCourses() }.returnsMany(
@@ -93,7 +107,7 @@ class CourseControllerTest {
 
         every { courseServiceMock.deleteCourse(any()) } just runs
 
-        val updatedCourse = webTestClient.delete()
+        webTestClient.delete()
             .uri("/v1/courses/{courseId}", 100)
             .exchange()
             .expectStatus().isNoContent

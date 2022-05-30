@@ -95,7 +95,7 @@ class CourseControllerIT {
         val course = Course(null, "Build RestFul APis using SpringBoot and Kotlin", "Development")
         courseRepository.save(course)
 
-        val updatedCourse = webTestClient.delete()
+        webTestClient.delete()
             .uri("/v1/courses/{courseId}", course.id)
             .exchange()
             .expectStatus().isNoContent
