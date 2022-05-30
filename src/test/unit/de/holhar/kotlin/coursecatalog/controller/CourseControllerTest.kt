@@ -2,6 +2,7 @@ package de.holhar.kotlin.coursecatalog.controller
 
 import com.ninjasquad.springmockk.MockkBean
 import de.holhar.kotlin.coursecatalog.dto.CourseDto
+import de.holhar.kotlin.coursecatalog.entity.Course
 import de.holhar.kotlin.coursecatalog.service.CourseService
 import de.holhar.kotlin.coursecatalog.util.courseDto
 import io.mockk.every
@@ -61,5 +62,28 @@ class CourseControllerTest {
 
         println("courseDts '$courseDtos'")
         Assertions.assertEquals(2, courseDtos!!.size)
+    }
+
+    @Test
+    fun updateCourse() {
+
+        // updated CourseDto
+        val updatedCourseDto = CourseDto(null, "Build RestFul APis using SpringBoot and Kotlin1", "Development")
+
+        every { courseServiceMock.updateCourse(any(), any()) } returns CourseDto(100, "Build RestFul APis using SpringBoot and Kotlin1", "Development")
+
+        val updatedCourse = webTestClient.put()
+            .uri("/v1/courses/{courseId}", 100)
+            .bodyValue(updatedCourseDto)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDto::class.java)
+            .returnResult()
+            .responseBody
+
+        Assertions.assertEquals(
+            "Build RestFul APis using SpringBoot and Kotlin1",
+            updatedCourse!!.name
+        )
     }
 }
