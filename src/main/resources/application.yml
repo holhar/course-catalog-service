@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: course-catalog-service
+
+app:
+  message: Hello from default profile
