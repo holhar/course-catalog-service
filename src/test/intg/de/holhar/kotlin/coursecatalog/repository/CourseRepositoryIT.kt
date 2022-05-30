@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.reactive.server.WebTestClient
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -26,6 +25,13 @@ class CourseRepositoryIT {
     @Test
     fun findByNameContaining() {
         val courses = courseRepository.findByNameContaining("SpringBoot")
+        println("courses '$courses'")
+        Assertions.assertEquals(2, courses.size)
+    }
+
+    @Test
+    fun findByName_nativeQuery() {
+        val courses = courseRepository.findByName("SpringBoot")
         println("courses '$courses'")
         Assertions.assertEquals(2, courses.size)
     }
