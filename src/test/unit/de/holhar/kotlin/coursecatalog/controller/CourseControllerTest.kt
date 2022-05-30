@@ -2,10 +2,11 @@ package de.holhar.kotlin.coursecatalog.controller
 
 import com.ninjasquad.springmockk.MockkBean
 import de.holhar.kotlin.coursecatalog.dto.CourseDto
-import de.holhar.kotlin.coursecatalog.entity.Course
 import de.holhar.kotlin.coursecatalog.service.CourseService
 import de.holhar.kotlin.coursecatalog.util.courseDto
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -85,5 +86,16 @@ class CourseControllerTest {
             "Build RestFul APis using SpringBoot and Kotlin1",
             updatedCourse!!.name
         )
+    }
+
+    @Test
+    fun deleteCourse() {
+
+        every { courseServiceMock.deleteCourse(any()) } just runs
+
+        val updatedCourse = webTestClient.delete()
+            .uri("/v1/courses/{courseId}", 100)
+            .exchange()
+            .expectStatus().isNoContent
     }
 }
