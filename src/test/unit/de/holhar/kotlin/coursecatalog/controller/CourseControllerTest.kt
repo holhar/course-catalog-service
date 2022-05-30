@@ -29,7 +29,7 @@ class CourseControllerTest {
     @Test
     fun addCourse() {
 
-        val courseDto = CourseDto(null, "Build Restful APIs using Kotlin and SpringBoot", "Development")
+        val courseDto = CourseDto(null, "Build Restful APIs using Kotlin and SpringBoot", "Development", 1)
 
         every { courseServiceMock.addCourse(any()) } returns courseDto(id = 1)
 
@@ -50,7 +50,7 @@ class CourseControllerTest {
     @Test
     fun addCourse_validation() {
 
-        val courseDto = CourseDto(null, "Build Restful APIs using Kotlin and SpringBoot", "Development")
+        val courseDto = CourseDto(null, "Build Restful APIs using Kotlin and SpringBoot", "Development", 1)
 
         val errorMessage = "Unexpected error occurred"
         every { courseServiceMock.addCourse(any()) } throws RuntimeException(errorMessage)
@@ -70,7 +70,7 @@ class CourseControllerTest {
     @Test
     fun addCourse_runtimeException() {
 
-        val courseDto = CourseDto(null, "", "")
+        val courseDto = CourseDto(null, "", "", 1)
 
         every { courseServiceMock.addCourse(any()) } returns courseDto(id = 1)
 

@@ -1,6 +1,7 @@
 package de.holhar.kotlin.coursecatalog.repository
 
 import de.holhar.kotlin.coursecatalog.util.courseEntityList
+import de.holhar.kotlin.coursecatalog.util.instructorEntity
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,10 +20,18 @@ class CourseRepositoryIT {
     @Autowired
     lateinit var courseRepository: CourseRepository
 
+    @Autowired
+    lateinit var instructorRepository: InstructorRepository
+
     @BeforeEach
     internal fun setUp() {
+        instructorRepository.deleteAll()
         courseRepository.deleteAll()
-        val courses = courseEntityList()
+
+        val instructor = instructorEntity()
+        instructorRepository.save(instructor)
+
+        val courses = courseEntityList(instructor)
         courseRepository.saveAll(courses)
     }
 
